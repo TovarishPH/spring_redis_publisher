@@ -1,5 +1,6 @@
 package com.ph.redispoc.rpublisher.service;
 
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
 import com.ph.redispoc.rpublisher.config.RedisConfig;
@@ -14,8 +15,22 @@ public class RedisPublisherService {
 		this.config = config;
 	}
 
-	public void publish(String message) {
-		this.config.redisTemplate().convertAndSend(this.config.channelTopic().getTopic(), message);
-		System.out.println("Mensagem enviada através do publisher.");
+	/**
+	 * Publica mensgem em um canal(topico)
+	 * @param topic canal
+	 * @param message mensagem
+	 */
+	public void publish(String topic, String message) {
+		this.config.redisTemplate().convertAndSend(this.getTopic(topic), message);
+		System.out.println("Mensagem enviada através do publisher para o canal " + topic + ".");
+	}
+	
+	/**
+	 * Cria um novo topico(canal) para envio da mensagem
+	 * @param topic canal
+	 * @return string com o nome do canal para publicação da mensagem
+	 */
+	private String getTopic(String topic) {
+		return new ChannelTopic(topic).toString();
 	}
 }

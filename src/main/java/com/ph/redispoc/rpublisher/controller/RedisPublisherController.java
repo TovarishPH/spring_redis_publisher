@@ -20,8 +20,15 @@ public class RedisPublisherController {
 		this.service = service;
 	}
 
+	/**
+	 * Dados os tópicos e mensagem, faz a publicação do conteúdo
+	 * @param redisMessage
+	 */
 	@PostMapping
 	public void sendMessage(@RequestBody RedisMessageTest redisMessage) {
-		this.service.publish(redisMessage.getMessage());
+		redisMessage.getTopicos().forEach(topico -> {
+			this.service.publish(topico, redisMessage.getMessage());
+			
+		});
 	}
 }

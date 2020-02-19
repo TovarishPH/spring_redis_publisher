@@ -10,16 +10,19 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 @Configuration
 public class RedisConfig {
 
+	/**
+	 * Abrindo conexão com o Redis
+	 * @return
+	 */
 	@Bean
 	public JedisConnectionFactory jedisConnectionFactory() {
 		return new JedisConnectionFactory();
 	}
 	
-	@Bean
-	public ChannelTopic channelTopic() {
-		return new ChannelTopic("teste");
-	}
-	
+	/**
+	 * Template de conexão com o Redis
+	 * @return
+	 */
 	@Bean
 	public RedisTemplate<String, String> redisTemplate() {
 		RedisTemplate<String, String> template = new RedisTemplate<String, String>();
